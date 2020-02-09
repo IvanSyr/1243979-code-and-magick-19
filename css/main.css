@@ -2,7 +2,7 @@ html,
 body
 {
     font: 20px 'PT Mono';
-
+    /* Что-то там*/
     min-width: 1024px;
     margin: 0;
     margin: 0 auto;
