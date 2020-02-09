@@ -1,6 +1,6 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
-* Студент: [Неопознанный енот](https://up.htmlacademy.ru/javascript/19/user/1243979).
+* Студент: [Сыроваткин Иван](https://up.htmlacademy.ru/javascript/19/user/1243979).
 * Наставник: `Неизвестно`.
 
 ---
