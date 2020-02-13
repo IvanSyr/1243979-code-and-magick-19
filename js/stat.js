@@ -49,7 +49,7 @@ window.renderStatistics = function (ctx, names, times) {
     };
 
   ctx.fillRect(CLOUD_X + GAP_CONTENT_SIDE + (GAP_CONTENT + barWidth) * i, cloudBottom - GAP_CONTENT_BOTTOM - FONT_GAP, barWidth, (times[i] * BAR_HEIGHT) / maxTime * (-1));
-  ctx.fillStyle = '#000';
+  ctx.fillStyle = '#000'; //Переопределяю значения предыдущей команды ctx.fillStyle
   ctx.fillText(names[i], CLOUD_X + GAP_CONTENT_SIDE + (GAP_CONTENT + barWidth) * i, cloudBottom - GAP_CONTENT_BOTTOM);
   ctx.fillText(Math.floor(times[i]), CLOUD_X + GAP_CONTENT_SIDE + (GAP_CONTENT + barWidth) * i, cloudBottom - GAP_CONTENT_BOTTOM - ((times[i] * BAR_HEIGHT) / maxTime) - FONT_GAP * 1.5);
   }
