@@ -30,10 +30,10 @@ window.renderStatistics = function (ctx, names, times) {
   var maxTime = getMaxElement(times);
 
   var congratulationText = function () {
-  tx.fillStyle = '#000';
-  tx.font = '16px PT Mono';
-  tx.fillText('Ура вы победили!', CLOUD_X + GAP_CONTENT_SIDE, CLOUD_Y + GAP_CONTENT_TOP);
-  tx.fillText('Список результатов:', CLOUD_X + GAP_CONTENT_SIDE, (CLOUD_Y + GAP_CONTENT_TOP) * 1.5);
+  ctx.fillStyle = '#000';
+  ctx.font = '16px PT Mono';
+  ctx.fillText('Ура вы победили!', CLOUD_X + GAP_CONTENT_SIDE, CLOUD_Y + GAP_CONTENT_TOP);
+  ctx.fillText('Список результатов:', CLOUD_X + GAP_CONTENT_SIDE, (CLOUD_Y + GAP_CONTENT_TOP) * 1.5);
   };
   congratulationText();
 
