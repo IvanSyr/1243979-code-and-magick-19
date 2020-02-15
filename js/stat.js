@@ -1,52 +1,86 @@
-'Use strict'
-
-var CLOUD_WIDTH = 420;                           //Ширина окна статистики
-var CLOUD_HEIGHT = 270;                          //Высота окна статистики
-var CLOUD_X = 100;                               //Координата по Х верхнего левого угла окна статистики
-var CLOUD_Y = 10;                                //Координата по Y верхнего левого угла окна статистики
-var GAP_CONTENT_SIDE = 55;                       //Расстояние от боков окна статистики до контента
-var GAP_CONTENT = 50;                            //Расстояние между стобиками статистики
-var GAP_CONTENT_TOP = 30;                        //Расстояние от верха окна статистики до текста
-var GAP_CONTENT_BOTTOM = 20;                     //Расстояние от низа окна статистики до контента
-var GAP_SHEDOW = 10;                             //Смещение тени вниз и вправо
-var FONT_GAP = 20;                               //Высота текстовых блоков
-var BAR_HEIGHT = 150;                            //Высота самого высокого стлбика статистики
-var BAR_WIDTH = 40;                              //Ширина стобиков статистики
-var CLOUD_BOTTOM = CLOUD_Y + CLOUD_HEIGHT;       //Низ окна статистики
-
-var renderCloud = function (ctx, x, y, color) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
-};
+'use strict';
 
 var getMaxElement = function (arr) {
-   return Math.max.apply(null, arr);
-};
+  return Math.max.apply(null, arr);
+}
+
+var getRandom = function (number) {
+  return Math.floor(Math.random() * number);
+}
 
 window.renderStatistics = function (ctx, names, times) {
-  renderCloud(ctx, CLOUD_X + GAP_SHEDOW, CLOUD_Y + GAP_SHEDOW, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
+  var CLOUD_X = 100;
+  var CLOUD_Y = 10;
+  var COLUMN_WIDTH = 40;
+
+var createCloud = function (x, y, color) {
+  var CLOUD_WIDTH = 420;
+  var CLOUD_HEIGHT = 270;
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
+}
+
+var renderCloudWithShadow = function () {
+  var GAP = 10;
+  var CLOUD_COLOR = 'rgba(255, 255, 255, 1)';
+  var SHADOW_COLOR = 'rgba(0, 0, 0, 0.3)';
+  createCloud(CLOUD_X + GAP, CLOUD_Y + GAP, SHADOW_COLOR);
+  createCloud(CLOUD_X, CLOUD_Y, CLOUD_COLOR);
+}
+
+var createText = function (text, x, y) {
+  ctx.fillStyle = '#000';
+  ctx.font = '16px PT Mono';
+  ctx.fillText(text, x, y);
+}
+
+var renderCongratulationText = function () {
+  var GAB_OF_LEFT = CLOUD_X + 55;
+  var GAB_OF_TOP = CLOUD_Y + 20;
+  var TEXT_HEIGHT = 20;
+  var texts = ['Ура вы победили!', 'Список результатов:'];
+  texts.forEach(function (text, i) {
+  createText(text, GAB_OF_LEFT, GAB_OF_TOP + (TEXT_HEIGHT * i))});
+}
+
+var createColumn = function (currentColumnX, bottom, heightColumn, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(currentColumnX, bottom - heightColumn, COLUMN_WIDTH, heightColumn)
+}
+
+var createHistogram = function (currentColumnX, heightColumn, name, time) {
+  var MY_COLOR = 'rgba(255, 0, 0, 1)';
+  var otherColor = 'hsl(240, ' + getRandom(100) + '%, 50%)';
+  var COLUMN_Y = 240;
+  var userTimeTextY = COLUMN_Y - heightColumn - 10;
+  var userNameTextY = COLUMN_Y + 20;
+  var color = name === 'Вы' ? MY_COLOR : otherColor;
+  var time = Math.round(time);
+  createText(time, currentColumnX, userTimeTextY);
+  createText(name, currentColumnX, userNameTextY);
+  createColumn(currentColumnX, COLUMN_Y, heightColumn, color);
+}
+
+var renderHistogram = function () {
+  var COLUMN_X = CLOUD_X + 55;
+  var COLUMN_GAP = 50;
+  var COLUMN_HEIGHT = 150;
   var maxTime = getMaxElement(times);
 
-  var congratulationText = function () {
-  ctx.fillStyle = '#000';
-  ctx.font = '16px PT Mono';
-  ctx.fillText('Ура вы победили!', CLOUD_X + GAP_CONTENT_SIDE, CLOUD_Y + GAP_CONTENT_TOP);
-  ctx.fillText('Список результатов:', CLOUD_X + GAP_CONTENT_SIDE, (CLOUD_Y + GAP_CONTENT_TOP) * 1.5);
-  };
-  congratulationText();
+  names.forEach(function(name, i) {
+  var time = times[i];
+  var currentColumnX = COLUMN_X + ((COLUMN_WIDTH + COLUMN_GAP) * i);
+  var currentColumnHeight = time / maxTime * COLUMN_HEIGHT;
+  createHistogram(currentColumnX, currentColumnHeight, name, time)});
+}
 
-  names.forEach(function (name, i) {
+var init = function () {
+  renderCloudWithShadow();
+  renderCongratulationText();
+  renderHistogram();
+}
 
-  var getRandomNamber = Math.floor(Math.random() * 100) + '%';
-  var floorTimes = Math.floor(times[i]);
+init();
 
-  ctx.fillStyle = name === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'hsl(240, ' + getRandomNamber + ', 50%)';
-  ctx.fillRect(CLOUD_X + GAP_CONTENT_SIDE + (GAP_CONTENT + BAR_WIDTH) * i, CLOUD_BOTTOM - GAP_CONTENT_BOTTOM - FONT_GAP, BAR_WIDTH, (times[i] * BAR_HEIGHT) / maxTime * (-1));
-  ctx.fillStyle = '#000';
-  ctx.font = '16px PT Mono';
-  ctx.fillText(name, CLOUD_X + GAP_CONTENT_SIDE + (GAP_CONTENT + BAR_WIDTH) * i, CLOUD_BOTTOM - GAP_CONTENT_BOTTOM);
-  ctx.fillText(floorTimes, CLOUD_X + GAP_CONTENT_SIDE + (GAP_CONTENT + BAR_WIDTH) * i, CLOUD_BOTTOM - GAP_CONTENT_BOTTOM - ((times[i] * BAR_HEIGHT) / maxTime) - FONT_GAP * 1.5);
-  });
-  };
+};
