@@ -1,5 +1,9 @@
 'use strict';
 
+var CLOUD_X = 100;
+var CLOUD_Y = 10;
+var COLUMN_WIDTH = 40;
+
 var getMaxElement = function (arr) {
   return Math.max.apply(null, arr);
 };
@@ -9,11 +13,6 @@ var getRandom = function (number) {
 };
 
 window.renderStatistics = function (ctx, names, times) {
-
-  var CLOUD_X = 100;
-  var CLOUD_Y = 10;
-  var COLUMN_WIDTH = 40;
-
   var createCloud = function (x, y, color) {
     var CLOUD_WIDTH = 420;
     var CLOUD_HEIGHT = 270;
@@ -36,12 +35,12 @@ window.renderStatistics = function (ctx, names, times) {
   };
 
   var renderCongratulationText = function () {
-    var GAB_OF_LEFT = CLOUD_X + 55;
-    var GAB_OF_TOP = CLOUD_Y + 20;
+    var GAP_OF_LEFT = CLOUD_X + 55;
+    var GAP_OF_TOP = CLOUD_Y + 20;
     var TEXT_HEIGHT = 20;
     var texts = ['Ура вы победили!', 'Список результатов:'];
     texts.forEach(function (text, i) {
-      createText(text, GAB_OF_LEFT, GAB_OF_TOP + (TEXT_HEIGHT * i));
+      createText(text, GAP_OF_LEFT, GAP_OF_TOP + (TEXT_HEIGHT * i));
     });
   };
 
